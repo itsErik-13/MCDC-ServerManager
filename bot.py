@@ -47,10 +47,10 @@ def selec_server(srv_no):
 @bot.command(name="servers", pass_context=True, help="Lists available servers")
 async def list_servers(ctx):
     resp = ""
-    i = 0
+    i = 1
     print("Request: @server_list")
     for srv in servidores(sesion(user=user, password=pswd)):
-        resp.append(str(i + 1) + ": " + srv.subdomain + "\n")
+        resp += (str(i) + ": " + srv.subdomain + "\n")
         i += 1
     response = f"```Los servidores registrados son: \n {resp} ```".format(resp)
     await ctx.send(response)
