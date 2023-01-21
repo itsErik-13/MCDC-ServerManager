@@ -84,7 +84,7 @@ async def start(ctx,srv_no):
         response = f"Starting {a}."
         await ctx.send(response)
     else:
-        status(ctx,srv_no)
+        await status(ctx,srv_no)
     
 
 
@@ -102,7 +102,7 @@ async def restart(ctx,srv_no):
         response = f"Restarting {a}."
         await ctx.send(response)
     else:
-        status(ctx,srv_no)
+        await status(ctx,srv_no)
     
  
 
@@ -119,7 +119,7 @@ async def stop(ctx,srv_no):
         response = f"```Shutting down {a}.```"
         await ctx.send(response)
     else:
-        status(ctx,srv_no)
+        await status(ctx,srv_no)
     
     
 
@@ -133,7 +133,7 @@ async def on_command_error(ctx, error):
     else:
         print(error)
     await ctx.send(response)
-    
+
 @socket.wssreceiver(atwss.Streams.console)
 async def console(msg):
     # print(msg)
