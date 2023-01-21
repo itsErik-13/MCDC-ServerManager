@@ -57,6 +57,7 @@ async def list_servers(ctx):
 
 
 @bot.command(name="status", pass_context=True, help="States the current state of the mentioned server")
+@commands.has_role("Jugador")
 async def status(ctx,srv_no):
     try:
         srv = selec_server(srv_no)
