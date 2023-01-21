@@ -83,7 +83,7 @@ async def start(ctx,srv_no):
     response = ""
     if srv.status == "offline":
         srv.start()
-        response = f"Starting {a}."
+        response = f"```Starting {a}.```"
         await ctx.send(response)
     else:
         await status(ctx,srv_no)
@@ -102,7 +102,7 @@ async def restart(ctx,srv_no):
     response = ""
     if srv.status != "online":
         srv.restart()
-        response = f"Restarting {a}."
+        response = f"```Restarting {a}.```"
         await ctx.send(response)
     else:
         await status(ctx,srv_no)
@@ -131,21 +131,12 @@ async def stop(ctx,srv_no):
 async def on_command_error(ctx, error):
     response = ""
     if isinstance(error, (commands.MissingRole, commands.MissingAnyRole)):
-            await ctx.send("No eres administrador")
+            await ctx.send("You are not admin")
     elif isinstance(error, commands.CommandNotFound):
-        await ctx.send("El comando no existe")
+        await ctx.send("Command does not exist")
     elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Menciona un servidor Ej: 1")
+        await ctx.send("Add the server number Eg:1")
     else:
         print(error)
-
-@socket.wssreceiver(atwss.Streams.console)
-async def console(msg):
-    # print(msg)
-    if 'Done' in msg:
-    # if 'Timings Reset' in msg:      # Si no funciona con Timings reset, cambialo a Done
-        await bot.get_channel(channel_id).send("El servidor: " + srv_1.subdomain + " está encendido")
-    if 'Stopping server' in msg:
-        await bot.get_channel(channel_id).send("El servidor: " + srv_1.subdomain + " se apagó")
 
 bot.run(secret_key)
