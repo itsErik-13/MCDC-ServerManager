@@ -52,7 +52,8 @@ async def list_servers(ctx):
     for srv in servidores(sesion(user=user, password=pswd)):
         resp.append(str(i + 1) + ": " + srv.subdomain)
         i += 1
-    await ctx.send("Los servidores registrados son: \n" + "\n".join(resp))
+    response = f"```Los servidores registrados son: \n {resp} ```".format(resp)
+    await ctx.send(response)
 
 
 @bot.command(name="status", pass_context=True, help="States the current state of the mentioned server")
@@ -81,9 +82,10 @@ async def start(ctx,srv_no):
     if srv.status == "offline":
         srv.start()
         response = f"Starting {a}."
+        await ctx.send(response)
     else:
-        response = f"{a} is {b}."
-    await ctx.send(response)
+        status(ctx,srv_no)
+    
 
 
 
@@ -92,11 +94,16 @@ async def restart(ctx,srv_no):
  
     srv = selec_server(srv_no)
     print("Request: @restart  " + srv.subdomain)
+    a = srv.subdomain
+    b = srv.status
+    response = ""
     if srv.status != "online":
-        await ctx.send("Restarting " + srv.subdomain)
         srv.restart()
+        response = f"Restarting {a}."
+        await ctx.send(response)
     else:
-        await ctx.send("Restarting " + srv.subdomain + ".")
+        status(ctx,srv_no)
+    
  
 
 
@@ -109,17 +116,22 @@ async def stop(ctx,srv_no):
     response = ""
     if srv.status == "online":
         srv.stop()
-        response = f"Shutting down {a}."
+        response = f"```Shutting down {a}.```"
+        await ctx.send(response)
     else:
-        response = f"{a} is {b}."
-    await ctx.send(response)
+        status(ctx,srv_no)
+    
     
 
 @bot.event  # para eventos
 async def on_command_error(ctx, error):
+    response = ""
     if isinstance(error, commands.CommandNotFound):
-        await ctx.send("El comando no existe")
+        response = "```El comando no existe```"
+    elif isinstance(error, commands.MissingRequiredArgument):
+        response = "```Menciona un servidor Ej: 1```"
     else:
         print(error)
+    await ctx.send(response)
 
 bot.run(secret_key)
