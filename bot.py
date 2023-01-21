@@ -133,5 +133,14 @@ async def on_command_error(ctx, error):
     else:
         print(error)
     await ctx.send(response)
+    
+@socket.wssreceiver(atwss.Streams.console)
+async def console(msg):
+    # print(msg)
+    if 'Done' in msg:
+    # if 'Timings Reset' in msg:      # Si no funciona con Timings reset, cambialo a Done
+        await bot.get_channel(channel_id).send("El servidor: " + srv_1.subdomain + " está encendido")
+    if 'Stopping server' in msg:
+        await bot.get_channel(channel_id).send("El servidor: " + srv_1.subdomain + " se apagó")
 
 bot.run(secret_key)
