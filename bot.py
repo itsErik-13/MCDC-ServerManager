@@ -43,7 +43,7 @@ def selec_server(srv_no):
             return srv
         i += 1
 
-'''
+
 @bot.command(name="servers", pass_context=True, help="Lists available servers")
 async def list_servers(ctx):
     resp = []
@@ -53,12 +53,12 @@ async def list_servers(ctx):
         resp.append(str(i + 1) + ": " + srv.subdomain)
         i += 1
     await ctx.send("Los servidores registrados son: \n" + "\n".join(resp))
-'''
+
 
 @bot.command(name="status", pass_context=True, help="States the current state of the mentioned server")
-async def status(ctx):
+async def status(ctx,srv_no):
     try:
-        srv = selec_server(1)
+        srv = selec_server(srv_no)
         print("Request: @status " + srv.subdomain)
         if srv is not None:
             a = srv.subdomain
@@ -70,10 +70,10 @@ async def status(ctx):
 
 
 @bot.command(name="start", pass_context=True, help="Starts the mentioned server")
-async def start(ctx):
+async def start(ctx,srv_no):
     # if 0 == int(srv_no) - 1:
     await socket.connect()
-    srv = selec_server(1)
+    srv = selec_server(srv_no)
     print("Request: @start  " + srv.subdomain)
     a = srv.subdomain
     b = srv.status
@@ -88,9 +88,9 @@ async def start(ctx):
 
 
 @bot.command(name="restart", pass_context=True, help="restartes the mentioned server")
-async def restart(ctx):
+async def restart(ctx,srv_no):
  
-    srv = selec_server(1)
+    srv = selec_server(srv_no)
     print("Request: @restart  " + srv.subdomain)
     if srv.status != "online":
         await ctx.send("Restarting " + srv.subdomain)
@@ -101,8 +101,8 @@ async def restart(ctx):
 
 
 @bot.command(name="stop", pass_context=True, help="Stops the server")
-async def stop(ctx):
-    srv = selec_server(1)
+async def stop(ctx,srv_no):
+    srv = selec_server(srv_no)
     print("Request: @stop   " + srv.subdomain)
     a = srv.subdomain
     b = srv.status
