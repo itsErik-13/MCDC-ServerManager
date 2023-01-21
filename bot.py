@@ -50,9 +50,9 @@ async def list_servers(ctx):
     i = 1
     print("Request: @server_list")
     for srv in servidores(sesion(user=user, password=pswd)):
-        resp += (str(i) + ": " + srv.subdomain + "\n")
+        resp += ("\n" + str(i) + ": " + srv.subdomain )
         i += 1
-    response = f"```Los servidores registrados son: \n {resp} ```".format(resp)
+    response = f"```Los servidores registrados son:{resp} ```".format(resp)
     await ctx.send(response)
 
 
