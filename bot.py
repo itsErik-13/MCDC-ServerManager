@@ -46,11 +46,11 @@ def selec_server(srv_no):
 
 @bot.command(name="servers", pass_context=True, help="Lists available servers")
 async def list_servers(ctx):
-    resp = []
+    resp = ""
     i = 0
     print("Request: @server_list")
     for srv in servidores(sesion(user=user, password=pswd)):
-        resp.append(str(i + 1) + ": " + srv.subdomain)
+        resp.append(str(i + 1) + ": " + srv.subdomain + "\n")
         i += 1
     response = f"```Los servidores registrados son: \n {resp} ```".format(resp)
     await ctx.send(response)
@@ -72,6 +72,7 @@ async def status(ctx,srv_no):
 
 
 @bot.command(name="start", pass_context=True, help="Starts the mentioned server")
+@commands.has_role("Jugador")
 async def start(ctx,srv_no):
     # if 0 == int(srv_no) - 1:
     await socket.connect()
@@ -91,6 +92,7 @@ async def start(ctx,srv_no):
 
 
 @bot.command(name="restart", pass_context=True, help="restartes the mentioned server")
+@commands.has_role("Administrador")
 async def restart(ctx,srv_no):
  
     srv = selec_server(srv_no)
@@ -109,6 +111,7 @@ async def restart(ctx,srv_no):
 
 
 @bot.command(name="stop", pass_context=True, help="Stops the server")
+@commands.has_role("Administrador")
 async def stop(ctx,srv_no):
     srv = selec_server(srv_no)
     print("Request: @stop   " + srv.subdomain)
@@ -127,13 +130,14 @@ async def stop(ctx,srv_no):
 @bot.event  # para eventos
 async def on_command_error(ctx, error):
     response = ""
-    if isinstance(error, commands.CommandNotFound):
-        response = "```El comando no existe```"
+    if isinstance(error, (commands.MissingRole, commands.MissingAnyRole)):
+            await ctx.send("No eres administrador")
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send("El comando no existe")
     elif isinstance(error, commands.MissingRequiredArgument):
-        response = "```Menciona un servidor Ej: 1```"
+        await ctx.send("Menciona un servidor Ej: 1")
     else:
         print(error)
-    await ctx.send(response)
 
 @socket.wssreceiver(atwss.Streams.console)
 async def console(msg):
