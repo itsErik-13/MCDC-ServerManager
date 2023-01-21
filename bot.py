@@ -43,10 +43,10 @@ def selec_server(srv_no):
             return srv
         i += 1
         
-@bot.command(name="help", pass_context=True, help="Help of the bot")
+'''@bot.command(name="help", pass_context=True, help="Help of the bot")
 async def help(ctx):
     response = "```Comandos:\n servers: Devuelve los servidores disponibles\n status: Devuelve el estado del servidor que se pasa como parámetro\n start: Inicia el servidor pasado como parámetro\n stop: Apaga el servidor que se pasa como parámetro\n restart: Reinicia el servidor que se pasa como parámetro```"
-    await ctx.send(response)
+    await ctx.send(response)'''
 
 
 @bot.command(name="servers", pass_context=True, help="Lists available servers")
